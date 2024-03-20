@@ -11,7 +11,7 @@ public class Main {
         System.out.println("le com svp");
         try {
             modbus.connecEsclave(In.readString(),9600,8, 0, 1);
-            modbus.lectureCoils(8192,2);
+            System.out.println(modbus.lectureCoils(8192,2));
         } catch (SerialPortException e) {
             throw new RuntimeException(e);
         }

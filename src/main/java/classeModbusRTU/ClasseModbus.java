@@ -38,12 +38,13 @@ public class ClasseModbus extends LiaisonSerie {
         byte [] tabCrc16 = intDeuxBytes(crc16.calculCrc16(tabSansCrc16));
         byte msbCrc16 = tabCrc16[0];
         byte lsbCrc16 = tabCrc16[1];
-        byte [] tabAvecCrc16 = {numeroEsclave, (byte)(0x03), msbAdresse ,lsbAdresse, msbLongueur, lsbLongueur, msbCrc16, lsbCrc16};
+        byte [] tabAvecCrc16 = {numeroEsclave, (byte)(0x03), msbAdresse ,lsbAdresse, msbLongueur, lsbLongueur, lsbCrc16, msbCrc16};
         super.ecrire(tabAvecCrc16);
 
         resultatValeur = lireTrame(9);
-        float trame = bigEndian.fromArray(resultatValeur);
-        return trame;
+        //float trame = bigEndian.fromArray(resultatValeur);
+
+        return 0;
     }
 
 }
