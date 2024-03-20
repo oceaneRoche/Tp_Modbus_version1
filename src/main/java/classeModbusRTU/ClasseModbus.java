@@ -6,6 +6,8 @@ import liaisonSerie.LiaisonSerie;
 public class ClasseModbus extends LiaisonSerie {
     byte numeroEsclave = 0;
     Crc16 crc16 = new Crc16();
+    BigEndian bigEndian = new BigEndian();
+    public byte [] resultatValeur = null;
     public ClasseModbus() {
     }
 
@@ -38,6 +40,10 @@ public class ClasseModbus extends LiaisonSerie {
         byte lsbCrc16 = tabCrc16[1];
         byte [] tabAvecCrc16 = {numeroEsclave, (byte)(0x03), msbAdresse ,lsbAdresse, msbLongueur, lsbLongueur, msbCrc16, lsbCrc16};
         super.ecrire(tabAvecCrc16);
-        return 0f;
+
+        resultatValeur = lireTrame(9);
+        float trame = bigEndian.fromArray(resultatValeur);
+        return trame;
     }
+
 }
