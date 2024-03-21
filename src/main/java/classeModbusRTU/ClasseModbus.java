@@ -42,7 +42,11 @@ public class ClasseModbus extends LiaisonSerie {
         super.ecrire(tabAvecCrc16);
 
         resultatValeur = lireTrame(9);
-        //float trame = bigEndian.fromArray(resultatValeur);
+        byte [] tableauValeur = {resultatValeur[2],resultatValeur[4],resultatValeur[5],resultatValeur[6]};
+        byte [] resultatCrc = intDeuxBytes(crc16.calculCrc16(tableauValeur));
+        if (resultatValeur[7] == resultatCrc[1] && resultatCrc[0] == resultatValeur[8]){
+            return BigEndian.fromArray(tableauValeur);
+        }
 
         return 0;
     }
