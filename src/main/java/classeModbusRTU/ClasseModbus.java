@@ -6,7 +6,6 @@ import liaisonSerie.LiaisonSerie;
 public class ClasseModbus extends LiaisonSerie {
     byte numeroEsclave = 0;
     Crc16 crc16 = new Crc16();
-    BigEndian bigEndian = new BigEndian();
     public byte [] resultatValeur = null;
     public ClasseModbus() {
     }
@@ -42,13 +41,15 @@ public class ClasseModbus extends LiaisonSerie {
         super.ecrire(tabAvecCrc16);
 
         resultatValeur = lireTrame(9);
-        byte [] tableauValeur = {resultatValeur[2],resultatValeur[4],resultatValeur[5],resultatValeur[6]};
+        byte [] tableauValeur = {resultatValeur[0],resultatValeur[1],resultatValeur[2],resultatValeur[3],resultatValeur[4],resultatValeur[5],resultatValeur[6]};
         byte [] resultatCrc = intDeuxBytes(crc16.calculCrc16(tableauValeur));
         if (resultatValeur[7] == resultatCrc[1] && resultatCrc[0] == resultatValeur[8]){
-            return BigEndian.fromArray(tableauValeur);
+            byte [] reception ={resultatValeur[3],resultatValeur[4],resultatValeur[5],resultatValeur[6]};
+            return BigEndian.fromArray(reception);
         }
-
         return 0;
     }
-
+    public void fermerLiaisonSerie(){
+        super.fermerPort();
+    }
 }
